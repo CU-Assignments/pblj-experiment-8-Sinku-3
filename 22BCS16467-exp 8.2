@@ -1,0 +1,74 @@
+Write a servlet to accept user credentials through an HTML form and display a personalized welcome message if the login is successful.
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Page</title>
+</head>
+<body>
+    <h2>Login</h2>
+    <form action="LoginServlet" method="post">
+        Username: <input type="text" name="username" required><br><br>
+        Password: <input type="password" name="password" required><br><br>
+        <input type="submit" value="Login">
+    </form>
+</body>
+</html>
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/LoginServlet")
+public class LoginServlet extends HttpServlet {
+
+    // Dummy credentials (in real-world, use database authentication)
+    private static final String USERNAME = "admin";
+    private static final String PASSWORD = "1234";
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        // Get user input from the form
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+
+        // Set response type
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+
+        // Authentication logic
+        if (USERNAME.equals(username) && PASSWORD.equals(password)) {
+            out.println("<html><body>");
+            out.println("<h2>Welcome, " + username + "!</h2>");
+            out.println("<p>Login successful.</p>");
+            out.println("</body></html>");
+        } else {
+            out.println("<html><body>");
+            out.println("<h2>Login Failed</h2>");
+            out.println("<p>Invalid username or password. Please try again.</p>");
+            out.println("</body></html>");
+        }
+    }
+}
+WebContent/
+│
+├── login.html
+│
+└── WEB-INF/
+    └── web.xml (if not using annotations)
+
+src/
+└── LoginServlet.java
+<web-app>
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>LoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/LoginServlet</url-pattern>
+    </servlet-mapping>
+</web-app>
